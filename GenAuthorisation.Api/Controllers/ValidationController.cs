@@ -24,14 +24,14 @@ namespace GenAuthorisation.Api.Controllers
         [HttpPost(Name = "Validate")]
         public IActionResult Validate([FromBody] UserToken uiUserToken)
         {
-            UserToken retrievedUserToken = _userTokensRepo.GetUser(uiUserToken.Token);
+            UserToken retrievedUserToken = _userTokensRepo.Get(uiUserToken.Token);
 
             if (retrievedUserToken is null)
             {
                 return BadRequest("Invalid user");
             }
 
-            if (DateTime.UtcNow > retrievedUserToken.Expiry)
+            if (DateTime.UtcNow > retrievedUserToken.RefreshAt)
             {
                 return BadRequest("Token expired");
             }
