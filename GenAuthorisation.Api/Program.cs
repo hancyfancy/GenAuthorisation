@@ -13,8 +13,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddTransient<IEncryptor>();
 builder.Services.AddTransient<IDecryptor>();
 builder.Services.AddTransient<IUserVerificationRepository>(s => new UserVerificationRepository(connectionString));
+builder.Services.AddTransient<IUserTokensRepository>(s => new UserTokensRepository(connectionString));
+builder.Services.AddTransient<IUserEncryptionRepository>(s => new UserEncryptionRepository(connectionString));
 
 var app = builder.Build();
 
