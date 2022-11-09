@@ -1,10 +1,22 @@
 import { Directive } from '@angular/core';
+import { AbstractControl, NG_VALIDATORS, Validator } from '@angular/forms';
 
 @Directive({
-  selector: '[appTokenLengthValidator]'
+  selector: '[tokenLengthValidator]',
+  providers: [{
+    provide: NG_VALIDATORS,
+    useExisting: TokenLengthValidatorDirective,
+    multi: true
+  }]
 })
-export class TokenLengthValidatorDirective {
+export class TokenLengthValidatorDirective implements Validator {
 
   constructor() { }
 
+  validate(control: AbstractControl): { [key: string]: any } | null {
+    if (control.value && ((control.value.length != 200) || (control.value.length != 6))) {
+      return { 'tokenLengthInvalid': true };
+    }
+    return null;
+  }
 }
